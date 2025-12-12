@@ -1,14 +1,56 @@
 // Cross-browser API wrapper
 const ext = typeof browser !== 'undefined' ? browser : chrome;
 
+let LOG_CONSOLE = false;
+
+function LogConsole(text) {
+  if (LOG_CONSOLE) {
+    console.log('[Fediverse Rewriter] ' + text);
+  }
+}
+
 (async function () {
-  console.log('[Fediverse Rewriter] content script loaded');
+  LogConsole('content script starting');
+
+  function getSettings() {
+    return new Promise((resolve) => {
+      const storage = ext.storage;
+      storage.sync.get(['homeInstance', 'logConsole'], (result) => {
+        if (chrome.runtime && chrome.runtime.lastError) {
+          console.error('[Fediverse Rewriter] storage error:', chrome.runtime.lastError);
+          resolve({ homeInstance: null, logConsole: false });
+          return;
+        }
+        resolve({
+          homeInstance: result.homeInstance || null,
+          logConsole: !!result.logConsole
+        });
+      });
+    });
+  }
+
+
+  const { homeInstance, logConsole } = await getSettings();
+  LOG_CONSOLE = logConsole;
+
+  LogConsole('homeInstance: ' + homeInstance + ', logConsole: ' + LOG_CONSOLE);
+
+  if (!homeInstance) {
+    LogConsole('No homeInstance configured, exiting.');
+    return;
+  }
+
+})();
+
+
+(async function () {
+  LogConsole( ' content script loaded');
 
   // Use storage.local for now (simpler, works in temp/dev)
   function getHomeInstance() {
     return new Promise((resolve) => {
       const storage = ext.storage;
-      storage.local.get(['homeInstance'], (result) => {
+      storage.sync.get(['homeInstance'], (result) => {
         if (chrome.runtime && chrome.runtime.lastError) {
           console.error('[Fediverse Rewriter] storage error:', chrome.runtime.lastError);
           resolve(null);
@@ -20,10 +62,10 @@ const ext = typeof browser !== 'undefined' ? browser : chrome;
   }
 
   const homeInstance = await getHomeInstance();
-  console.log('[Fediverse Rewriter] homeInstance from storage:', homeInstance);
+  LogConsole( 'homeInstance from storage:', homeInstance);
 
   if (!homeInstance) {
-    console.log('[Fediverse Rewriter] No homeInstance configured, exiting.');
+    LogConsole( ' No homeInstance configured, exiting.');
     return;
   }
 
@@ -41,13 +83,13 @@ const ext = typeof browser !== 'undefined' ? browser : chrome;
         // Local username: /@alice on aus.social
         const username = parts[0];
         const host = u.hostname;
-        console.log('[Fediverse Rewriter] local username:', username, 'host:', host);
+        LogConsole( ' local username:', username, 'host:', host);
         return { username, host };
       } else {
         // Remote username already encoded: /@alice@remote.example on aus.social
         const username = parts[0];
         const host = parts.slice(1).join('@'); // everything after the first "@"
-        console.log('[Fediverse Rewriter] remote username:', username, 'host:', host);
+        LogConsole( ' remote username:', username, 'host:', host);
         return { username, host };
       }
     } catch (e) {
@@ -60,7 +102,7 @@ const ext = typeof browser !== 'undefined' ? browser : chrome;
   function buildLocalProfileUrl(home, username, host) {
     // home: e.g. https://homeserver.com
     // result: https://homeserver.com/@username@host
-    console.log('[Fediverse Rewriter] 3 username: {username} host:{host}');
+    LogConsole( ' 3 username: '+username+' host:'+host);
     return `${home}/@${username}@${host}`;
   }
 

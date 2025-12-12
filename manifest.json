@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Fediverse Remote Follow Rewriter",
-  "version": "0.4",
+  "version": "0.5",
   "description": "Rewrite Mastodon/Fediverse profile links to use your home server's remote follow.",
   "permissions": [
     "storage"

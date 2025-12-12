@@ -1,17 +1,22 @@
-(function() {
+(function () {
   const homeInput = document.getElementById('homeInstance');
+  const logCheckbox = document.getElementById('logConsole');
   const saveButton = document.getElementById('save');
   const statusEl = document.getElementById('status');
 
   const storage = chrome.storage || browser.storage;
 
-  storage.sync.get('homeInstance', (result) => {
-    if (chrome.runtime.lastError) {
+  // Load saved values
+  storage.sync.get(['homeInstance', 'logConsole'], (result) => {
+    if (chrome.runtime && chrome.runtime.lastError) {
       console.error(chrome.runtime.lastError);
       return;
     }
     if (result.homeInstance) {
       homeInput.value = result.homeInstance;
+    }
+    if (typeof result.logConsole === 'boolean') {
+      logCheckbox.checked = result.logConsole;
     }
   });
 
@@ -26,18 +31,29 @@
 
   saveButton.addEventListener('click', () => {
     const normalized = normalizeInstance(homeInput.value);
+    const logConsole = logCheckbox.checked;
+
     if (!normalized) {
       statusEl.textContent = 'Please enter a valid URL.';
       return;
     }
-    storage.sync.set({ homeInstance: normalized }, () => {
-      if (chrome.runtime.lastError) {
-        console.error(chrome.runtime.lastError);
-        statusEl.textContent = 'Error saving setting.';
-        return;
+
+    storage.sync.set(
+      {
+        homeInstance: normalized,
+        logConsole: logConsole
+      },
+      () => {
+        if (chrome.runtime && chrome.runtime.lastError) {
+          console.error(chrome.runtime.lastError);
+          statusEl.textContent = 'Error saving settings.';
+          return;
+        }
+        statusEl.textContent = 'Saved.';
+        setTimeout(() => {
+          statusEl.textContent = '';
+        }, 2000);
       }
-      statusEl.textContent = 'Saved: ' + normalized;
-      setTimeout(() => { statusEl.textContent = ''; }, 2000);
-    });
+    );
   });
 })();
