@@ -1,0 +1,34 @@
+{
+  "manifest_version": 3,
+  "name": "Fediverse Remote Follow Rewriter",
+  "version": "0.4",
+  "description": "Rewrite Mastodon/Fediverse profile links to use your home server's remote follow.",
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "*://*/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Fediverse Remote Follow",
+    "default_icon": {
+      "16": "icons/icon_16.png",
+      "32": "icons/icon_32.png",
+      "128": "icons/icon_128.png"
+    }
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "js": ["content-scripts.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

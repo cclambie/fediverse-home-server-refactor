@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Fediverse Remote Follow Settings</title>
+  <style>
+    body { font-family: sans-serif; margin: 1rem; }
+    label { display: block; margin-bottom: 0.5rem; }
+    input { width: 100%; max-width: 400px; }
+    button { margin-top: 0.5rem; }
+    .status { margin-top: 0.5rem; color: green; }
+  </style>
+</head>
+<body>
+  <h1>Fediverse Remote Follow Settings</h1>
+  <label>
+    Home instance URL (e.g. https://aus.social):
+    <input id="homeInstance" type="text" placeholder="https://your.instance" value="https://fosstodon.org">
+  </label>
+  <button id="save">Save</button>
+  <div id="status" class="status"></div>
+
+  <script src="options.js"></script>
+</body>
+</html>
