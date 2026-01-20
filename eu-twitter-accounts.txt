@@ -11,21 +11,3 @@ France,Raphael Arnault,Deputy,Unknown,@ArnaultRaphael
 France,Gabriel Attal,Deputy,Unknown,@GabrielAttal
 France,Clementine Autain,Deputy,Unknown,@Clem_Autain
 France,Joel Aviragnet,Deputy,Unknown,@JAviragnet
-Germany,Friedrich Merz,Federal Chancellor,National,
-Germany,Lars Klingbeil,Finance Minister / Vice Chancellor,National,
-Germany,Alexander Dobrindt,Interior Minister,National,
-Germany,Johann Wadephul,Foreign Minister,National,
-Germany,Boris Pistorius,Defence Minister,National,
-Germany,Katherina Reiche,Economic Affairs and Energy Minister,National,
-Germany,Dorothee Baer,Research and Technology Minister,National,
-Germany,Stefanie Hubig,Justice Minister,National,
-Germany,Karin Prien,Education and Family Minister,National,
-Germany,Baerbel Bas,Labour and Social Affairs Minister,National,
-Germany,Karsten Wildberger,Digital Transformation Minister,National,
-Germany,Patrick Schnieder,Transport Minister,National,
-Germany,Carsten Schneider,Environment Minister,National,
-Germany,Nina Warken,Health Minister,National,
-Germany,Alois Rainer,Agriculture Minister,National,
-Germany,Reem Alabali Radovan,Development Minister,National,
-Germany,Verena Hubertz,Housing Minister,National,
-Germany,Thorsten Frei,Head of Chancellery,National,
