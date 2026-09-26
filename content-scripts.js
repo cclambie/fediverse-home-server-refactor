@@ -134,17 +134,25 @@ function LogConsole(text) {
         // ignore parse errors
       }
 
-      const localProfile = buildLocalProfileUrl(homeInstance, info.username, info.host);
+      // Extract post ID from the original URL
+      const url = new URL(absolute);
+      const pathParts = url.pathname.split('/').filter(p => p); // e.g., ['@leavex', '115974524993156938']
+      const postId = pathParts.length > 1 ? pathParts[pathParts.length - 1] : '';
+
+      let localProfile = buildLocalProfileUrl(homeInstance, info.username, info.host);
+      
+      // Append post ID if it exists and is numeric
+      if (postId && /^\d+$/.test(postId)) {
+        localProfile += `/${postId}`;
+      }
 
       a.setAttribute('data-original-href', absolute);
       a.setAttribute('href', localProfile);
-
 
       if (!a.dataset.fediRewritten) {
         a.dataset.fediRewritten = 'true';
         a.style.outline = '1px dotted #6a0dad';
         a.title = 'View via ' + homeInstance + ' (original: ' + absolute + ')';
-
       }
     });
   }

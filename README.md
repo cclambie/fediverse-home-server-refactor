@@ -71,14 +71,24 @@ From that point on, any supported profile links you click should open via this h
     - `https://your.home.instance/@SecretAntelope@covertcreatures.xyz`
   - An “on your.home.instance” pill appears next to the server name.
 
+## Builds
+
+- Chrome (Manifest V3): branch `main`
+- Firefox (Manifest V2): branch `firefox`
+
 ## Development
 
+### Chrome/ main branch
 - The extension is written as a Manifest V3 extension for Chrome.
 - Core pieces:
   - `manifest.json` – extension metadata and permissions
   - `background.js` – action icon handling and options page opening
   - `options.html` / `options.js` – settings UI for the home instance
   - `content-scripts.js` – DOM parsing and link rewriting logic
+
+### Firefox branch
+- slightly different manifest, V2 only
+- different background.js to handle the manifest V2 way of dealing with listeners
 
 The parsing is centralised in a single function that takes a URL and returns `{ username, host }` for both local and remote profile URL shapes. All rewriting, including the “on {home}” pill, uses this parser to avoid duplicated hostnames.
 
